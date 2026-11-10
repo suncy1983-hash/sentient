@@ -199,6 +199,11 @@ from .const import (
     MAX_CARRY_ON_MINUTES,
     CONF_FOCUSED_TOOLS,
     CONF_ASK_LATER,
+    CONF_VOICE_ID,
+    CONF_VOICE_ID_SECONDS,
+    CONF_VOICE_ID_SENSOR,
+    DEFAULT_VOICE_ID_SECONDS,
+    MAX_VOICE_ID_SECONDS,
     CONF_PUT_RIGHT,
     CONF_MUSIC,
     CONF_HOUSE_RULES,
@@ -611,6 +616,13 @@ def _speech_schema(defaults: dict[str, Any]) -> vol.Schema:
             ),
             vol.Required(CONF_FOCUSED_TOOLS, **d(CONF_FOCUSED_TOOLS, False)): selector.BooleanSelector(),
             vol.Required(CONF_ASK_LATER, **d(CONF_ASK_LATER, False)): selector.BooleanSelector(),
+            vol.Required(CONF_VOICE_ID, **d(CONF_VOICE_ID, False)): selector.BooleanSelector(),
+            vol.Optional(CONF_VOICE_ID_SENSOR, **d(CONF_VOICE_ID_SENSOR)): selector.EntitySelector(
+                selector.EntitySelectorConfig(domain=["sensor", "input_text", "text"])
+            ),
+            vol.Required(CONF_VOICE_ID_SECONDS, **d(CONF_VOICE_ID_SECONDS, DEFAULT_VOICE_ID_SECONDS)): selector.NumberSelector(
+                selector.NumberSelectorConfig(min=5, max=MAX_VOICE_ID_SECONDS, step=5, unit_of_measurement="s", mode=selector.NumberSelectorMode.BOX)
+            ),
             vol.Required(CONF_PUT_RIGHT, **d(CONF_PUT_RIGHT, True)): selector.BooleanSelector(),
             vol.Required(CONF_MUSIC, **d(CONF_MUSIC, True)): selector.BooleanSelector(),
             vol.Optional(CONF_HOUSE_RULES, **d(CONF_HOUSE_RULES, "")): selector.TextSelector(

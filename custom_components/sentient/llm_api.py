@@ -1868,6 +1868,10 @@ class SentientAPI(llm.API):
         room = self._room_of_device(llm_context.device_id)
         if room:
             lines.append(f"The person talking to you is in the {room}.")
+        from .voice_id import voice_line
+
+        if who := voice_line(self.hass, opts):
+            lines.append(who)
         profile = rt.profiles.for_device(llm_context.device_id) if getattr(rt, "profiles", None) is not None else None
         private = bool(profile and profile.get("private"))
         if private:
